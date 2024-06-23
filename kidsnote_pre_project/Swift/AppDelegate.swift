@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let rootViewController = ViewControllerFactory.shared.makeSerchListViewController()
         let navigationController = UINavigationController(rootViewController: rootViewController)
+        navigationController.view.backgroundColor = .white
         
         // 루트 뷰 컨트롤러 설정
         window?.rootViewController = navigationController
