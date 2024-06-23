@@ -95,6 +95,7 @@ public class LoaderOperation: Operation {
         }
         
         let manager = ImageFileManager()
+        var error: Error?
         
         if let imageCache = ImageFetcher.default.getSavedCache(key: urlStr) { // 캐시 이미지
                 image = imageCache
