@@ -9,5 +9,5 @@ import Combine
 import Foundation
 
 protocol SerchListDataFecherType{
-    func getList(key: String) -> AnyPublisher<[ListModel], FecherError>
+    func getList(key: String) -> AnyPublisher<SerchModel, FecherError>
 }

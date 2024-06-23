@@ -8,40 +8,12 @@
 import Foundation
 import Combine
 
-class UrlSessionDetailFetcher: DetailDataFecherType {
+// HttpDetailFetcher 클래스 정의, DetailDataFecherType 및 HttpDataFetcherType 프로토콜을 준수
+class HttpDetailFetcher: DetailDataFecherType, HttpDataFetcherType {
+    
+    // getDetail 메서드, 주어진 키를 사용하여 책의 상세 정보를 가져옴
     func getDetail(key: String) -> AnyPublisher<BookDetailModel, FecherError> {
-        let urlString = "https://www.googleapis.com/books/v1/volumes/\(key)"
-
-        return URLSession.shared.dataTaskPublisher(for: URL(string: urlString)!)
-            .map(\.data)
-            .decode(type: BookDetailModel.self, decoder: JSONDecoder())
-            .mapError { err in
-                if let decodingError = err as? DecodingError {
-                    let message: String = {
-                        switch decodingError {
-                        case .typeMismatch(let any, let context):
-                            return "could not find key \(any) in JSON: \(context.debugDescription)"
-                        case .valueNotFound(let any, let context):
-                            return "could not find key \(any) in JSON: \(context.debugDescription)"
-                        case .keyNotFound(let codingKey, let context):
-                            return "could not find key \(codingKey) in JSON: \(context.debugDescription)"
-                        case .dataCorrupted(let context):
-                            return "could not find key in JSON: \(context.debugDescription)"
-                        @unknown default:
-                            return err.localizedDescription
-                        }
-                    }()
-                    
-                    return FecherError.decodingErr(message: message)
-                    
-                } else if let error = err as? FecherError {
-                    return error
-                } else {
-                    return FecherError.inServerError(code: (err as NSError).code, message: err.localizedDescription)
-                }
-            }
-            .receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
-            .eraseToAnyPublisher()
+        // fatcher 메서드를 호출하여 데이터를 가져옴
+        fatcher(address: "https://www.googleapis.com/books/v1/volumes/\(key)")
     }
 }

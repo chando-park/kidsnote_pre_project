@@ -10,11 +10,10 @@ import var CommonCrypto.CC_MD5_DIGEST_LENGTH
 import func CommonCrypto.CC_MD5
 import typealias CommonCrypto.CC_LONG
 
-
-class ImageFileManager: NSObject{
+class ImageFileManager: NSObject {
     
     private var cacheFolder: URL? = {
-        if let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first{ //종류 체크
+        if let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first { // 종류 체크
             let bundleID = (Bundle.main.bundleIdentifier ?? "") + "-imageCache"
             let path = cacheDirectory.appendingPathComponent(bundleID)
             
@@ -25,8 +24,8 @@ class ImageFileManager: NSObject{
         return nil
     }()
     
-    //MD5 (Message-Digest algorithm 5) : 128비트 암호화 해시 함수
-    private func md5(string: String) -> Data?{
+    // MD5 (Message-Digest algorithm 5) : 128비트 암호화 해시 함수
+    private func md5(string: String) -> Data? {
         guard let messageData = string.data(using: String.Encoding.utf8) else {
             return nil
         }
@@ -42,14 +41,14 @@ class ImageFileManager: NSObject{
         return digestData
     }
     
-    func imageFilePath(urlStr: String) -> URL?{
-        let fileName = md5(string: urlStr)!.map{ String(format: "%02hhx", $0)}.joined() + ".png"
+    func imageFilePath(urlStr: String) -> URL? {
+        guard let md5Data = md5(string: urlStr) else { return nil }
+        let fileName = md5Data.map { String(format: "%02hhx", $0) }.joined() + ".png"
         return cacheFolder?.appendingPathComponent(fileName)
     }
     
-    func isExistCacheFile(urlStr: String) -> Bool{
-        if let filePath = imageFilePath(urlStr: urlStr){
-//            return FileManager.default.fileExists(atPath: filePath.path())
+    func isExistCacheFile(urlStr: String) -> Bool {
+        if let filePath = imageFilePath(urlStr: urlStr) {
             return FileManager.default.fileExists(atPath: filePath.path)
         }
         return false

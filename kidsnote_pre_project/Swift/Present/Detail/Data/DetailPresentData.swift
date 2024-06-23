@@ -7,16 +7,17 @@
 
 import Foundation
 
-struct SearchListPresentData {
-    let id: String
+struct DetailPresentData {
     let thumbnailURL: String?
     let title: String
     let authors: String
+    let desc: String?
 }
 
 
-extension ListModel{
-    func toPresentData() -> SearchListPresentData{
-        SearchListPresentData(id: id, thumbnailURL: thumbnailURL?.absoluteString, title: title, authors: authors)
+
+extension BookDetailModel{
+    func toPresenData() -> DetailPresentData{
+        DetailPresentData(thumbnailURL: volumeInfo.imageLinks?.thumbnail, title: volumeInfo.title, authors: volumeInfo.authors.joined(separator: ","), desc: volumeInfo.description)
     }
 }

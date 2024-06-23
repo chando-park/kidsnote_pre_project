@@ -7,16 +7,16 @@
 
 import Foundation
 
-struct ListPresentData {
+struct SearchListPresentData {
     let id: String
-    let thumbnailURL: URL?
+    let thumbnailURL: String?
     let title: String
     let authors: String
 }
 
 
 extension ListModel{
-    func toPresentData() -> ListPresentData{
-        ListPresentData(id: id, thumbnailURL: thumbnailURL, title: title, authors: authors)
+    func toPresentData() -> SearchListPresentData{
+        SearchListPresentData(id: id, thumbnailURL: thumbnailURL?.absoluteString, title: title, authors: authors)
     }
 }
