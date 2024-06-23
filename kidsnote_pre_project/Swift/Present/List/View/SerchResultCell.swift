@@ -84,18 +84,3 @@ class SearchResultCell: UITableViewCell {
         authorsLabel.text = data.authors
     }
 }
-
-// UIImageView에 비동기적으로 이미지를 로드하는 확장
-extension UIImageView {
-    func setImage(with urlString: String) {
-        guard let url = URL(string: urlString) else { return }
-        
-        DispatchQueue.global().async {
-            if let data = try? Data(contentsOf: url) {
-                DispatchQueue.main.async {
-                    self.image = UIImage(data: data)
-                }
-            }
-        }
-    }
-}
